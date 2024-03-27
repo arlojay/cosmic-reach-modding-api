@@ -52,8 +52,8 @@ class ColorList {
 }
 
 
-const colors = {
-    crColors: new ColorList([
+class Colors {
+    static crColors = new ColorList([
         new Color("white", 15, 15, 15),
         new Color("red", 15, 0, 0),
         new Color("orange", 13, 7, 0),
@@ -72,5 +72,5 @@ const colors = {
 export {
     Color, ColorList,
     
-    colors
+    Colors
 };

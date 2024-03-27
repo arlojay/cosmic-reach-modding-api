@@ -2,6 +2,7 @@ import Block from "./api/block.js";
 import BlockAction from "./api/blockAction.js";
 import BlockModel from "./api/blockModel.js";
 import BlockState, { StateId, StateIdBase } from "./api/blockState.js";
+import { Color, ColorList, Colors } from "./api/colors.js";
 import { FrontBackCuboid } from "./api/cuboidHelpers.js";
 import Directions, { Direction, DirectionList, DirectionMap } from "./api/directions.js";
 import Material from "./api/material.js";
@@ -35,4 +36,7 @@ export {
     ToggleableModel,
     Writer,
     Writeable,
+    Color,
+    ColorList,
+    Colors,
 };

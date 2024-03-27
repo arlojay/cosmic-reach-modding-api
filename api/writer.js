@@ -47,6 +47,8 @@ class Writer {
         if(!existsSync(p = this.getSublocation("models", "blocks"))) mkdirSync(p);
         if(!existsSync(p = this.getSublocation("blocks"))) mkdirSync(p);
         if(!existsSync(p = this.getSublocation("block_events"))) mkdirSync(p);
+        if(!existsSync(p = this.getSublocation("textures"))) mkdirSync(p);
+        if(!existsSync(p = this.getSublocation("textures", "blocks"))) mkdirSync(p);
     }
     
     /** @param {Writeable} object */

@@ -7,7 +7,7 @@ This library creates a pipeline for creating and compiling mods using only JavaS
 ### Basic Stone Block
 The following is an example script for a mod that adds a stone block that does, well, nothing.
 ```js
-import { Mod, BlockModel, ModelCuboid, Material, Writer } from "crmapi";
+import { Mod, BlockModel, ModelCuboid, Material, Writer } from "crmod-api";
 import { Box3, Vector3 } from "three";
 
 const writer = new Writer("./build"); // Output directory of the mod
@@ -56,7 +56,7 @@ await mod.write();
 ### Glowing Cheese
 The following is an example script for a mod that adds a glowing cheese block that, when interacted with, disappears.
 ```js
-import { Mod, BlockModel, ModelCuboid, Material, TriggerSheet, BlockAction, Writer } from "crmapi";
+import { Mod, BlockModel, ModelCuboid, Material, TriggerSheet, BlockAction, Writer } from "crmod-api";
 import { Box3, Vector3 } from "three";
 
 const writer = new Writer("./build");

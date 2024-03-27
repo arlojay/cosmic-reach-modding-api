@@ -1,7 +1,8 @@
-import { Box3, Material } from "three";
-import ModelMaterial from "./modelMaterial.js";
+import { Box3 } from "three";
+import Material from "./material.js";
+import { Direction } from "./directions.js";
 
-const DEFAULT_MATERIAL = new ModelMaterial("debug.png");
+const DEFAULT_MATERIAL = new Material("debug.png");
 
 class ModelCuboid {
     constructor(box) {
@@ -29,61 +30,61 @@ class ModelCuboid {
         }
     }
 
-    /*** @returns {ModelCuboid} */
+    /** @returns {ModelCuboid} */
     setAmbientOcclusionEnabled(ambientOcclusionEnabled) {
         this.ambientOcclusion = ambientOcclusionEnabled;
         return this;
     }
     
-    /*** @returns {ModelCuboid} */
+    /** @returns {ModelCuboid} */
     setAllMaterials(material) {
         this.materials.west = this.materials.east = this.materials.down = this.materials.up = this.materials.north = this.materials.south = material;
         return this;
     }
     
-    /*** @returns {ModelCuboid} */
+    /** @returns {ModelCuboid} */
     setIndividualMaterials(west, east, down, up, north, south) {
         this.materials = { west, east, down, up, north, south };
         return this;
     }
     
-    /*** @returns {ModelCuboid} */
-    setFaceMaterial(face, material) {
-        this.materials[face] = material;
+    /** @param {Direction} direction * @returns {ModelCuboid} */
+    setFaceMaterial(direction, material) {
+        this.materials[direction.name] = material;
         return this;
     }
     
-    /*** @returns {ModelCuboid} */
+    /** @returns {ModelCuboid} */
     setWestMaterial(material) {
         this.materials.west = material;
         return this;
     }
     
-    /*** @returns {ModelCuboid} */
+    /** @returns {ModelCuboid} */
     setEastMaterial(material) {
         this.materials.east = material;
         return this;
     }
     
-    /*** @returns {ModelCuboid} */
+    /** @returns {ModelCuboid} */
     setDownMaterial(material) {
         this.materials.down = material;
         return this;
     }
     
-    /*** @returns {ModelCuboid} */
+    /** @returns {ModelCuboid} */
     setUpMaterial(material) {
         this.materials.up = material;
         return this;
     }
     
-    /*** @returns {ModelCuboid} */
+    /** @returns {ModelCuboid} */
     setSouthMaterial(material) {
         this.materials.south = material;
         return this;
     }
     
-    /*** @returns {ModelCuboid} */
+    /** @returns {ModelCuboid} */
     setNorthMaterial(material) {
         this.materials.north = material;
         return this;
@@ -94,55 +95,55 @@ class ModelCuboid {
     }
 
     
-    /*** @returns {ModelCuboid} */
+    /** @returns {ModelCuboid} */
     setAllVisible(visible) {
         this.visible.west = this.visible.east = this.visible.down = this.visible.up = this.visible.north = this.visible.south = visible;
         return this;
     }
     
-    /*** @returns {ModelCuboid} */
+    /** @returns {ModelCuboid} */
     setIndividualVisible(west, east, down, up, north, south) {
         this.visible = { west, east, down, up, north, south };
         return this;
     }
     
-    /*** @returns {ModelCuboid} */
+    /** @returns {ModelCuboid} */
     setFaceVisible(face, visible) {
         this.visible[face] = visible;
         return this;
     }
     
-    /*** @returns {ModelCuboid} */
+    /** @returns {ModelCuboid} */
     setWestVisible(visible) {
         this.visible.west = visible;
         return this;
     }
     
-    /*** @returns {ModelCuboid} */
+    /** @returns {ModelCuboid} */
     setEastVisible(visible) {
         this.visible.east = visible;
         return this;
     }
     
-    /*** @returns {ModelCuboid} */
+    /** @returns {ModelCuboid} */
     setDownVisible(visible) {
         this.visible.down = visible;
         return this;
     }
     
-    /*** @returns {ModelCuboid} */
+    /** @returns {ModelCuboid} */
     setUpVisible(visible) {
         this.visible.up = visible;
         return this;
     }
     
-    /*** @returns {ModelCuboid} */
+    /** @returns {ModelCuboid} */
     setSouthVisible(visible) {
         this.visible.south = visible;
         return this;
     }
     
-    /*** @returns {ModelCuboid} */
+    /** @returns {ModelCuboid} */
     setNorthVisible(visible) {
         this.visible.north = visible;
         return this;
@@ -153,7 +154,7 @@ class ModelCuboid {
     }
 
     
-    /*** @returns {ModelCuboid} */
+    /** @returns {ModelCuboid} */
     applyMatrixTransform(matrix) {
         this.box.applyMatrix4(matrix);
         return this;

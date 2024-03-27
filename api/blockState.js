@@ -1,11 +1,11 @@
-import ModelCollection from "./modelCollection.js";
+import BlockModel from "./blockModel.js";
 import TriggerSheet from "./triggerSheet.js";
 
 class StateId {
     constructor(base) {
-        /*** @type {StateIdBase} */
+        /** @type {StateIdBase} */
         this.base = base;
-        /*** @type {Map<String, String>} */
+        /** @type {Map<String, String>} */
         this.states = new Map;
         this.reset();
     }
@@ -45,7 +45,7 @@ class StateIdBase {
         if(this.locked) throw new ReferenceError("Cannot add keys to id bases that have already created ids");
         this.keys.set(key, defaultValue);
     }
-    /*** @returns {StateId} */
+    /** @returns {StateId} */
     createStateId() {
         this.locked = true;
         return new StateId(this);
@@ -61,13 +61,13 @@ class StateIdBase {
 
 class BlockState {
     constructor(id, model, settings = {}) {
-        /*** @type {StateId} */
+        /** @type {StateId} */
         this.id = id;
         
-        /*** @type {ModelCollection} */
+        /** @type {BlockModel} */
         this.model = model;
         
-        /*** @type {TriggerSheet} */
+        /** @type {TriggerSheet} */
         this.triggerSheet = settings.triggerSheet ?? undefined;
         
         this.opaque = settings.opaque ?? true;
@@ -80,7 +80,7 @@ class BlockState {
         this.hidden = settings.hidden ?? false;
     }
 
-    /*** @returns {BlockState} */
+    /** @returns {BlockState} */
     clone(id = this.id) {
         return new BlockState(id.clone(), this.model.clone(), {
             opaque: this.opaque,
@@ -95,9 +95,9 @@ class BlockState {
         })
     }
 
-    serialize() {
+    serialize(prefix) {
         return {
-            modelName: "model_" + this.model.name,
+            modelName: "model_" + prefix + "_" + this.model.name,
             isOpaque: this.opaque,
             isTransparent: this.transparent,
             lightAttenuation: this.lightAttenuation,
@@ -106,7 +106,7 @@ class BlockState {
             lightLevelGreen: this.lightLevelGreen,
             lightLevelBlue: this.lightLevelBlue,
             catalogHidden: this.hidden,
-            blockEventsId: this.triggerSheet?.id
+            blockEventsId: prefix + ":" + this.triggerSheet?.id
         }
     }
 }

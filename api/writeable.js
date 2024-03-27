@@ -2,7 +2,7 @@ class Writeable {
     constructor() {
         this.written = false;
     }
-    serialize() {
+    serialize(prefix) {
         return {};
     }
 }

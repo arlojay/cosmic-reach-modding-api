@@ -1,10 +1,10 @@
-import ModelCollection from "./modelCollection.js";
+import BlockModel from "./blockModel.js";
 
 class ToggleableModel {
     constructor() {
-        /*** @type {Map(String, ModelCollection)} */
+        /** @type {Map(String, ModelCollection)} */
         this.models = new Map;
-        /*** @type {ModelCollection} */
+        /** @type {BlockModel} */
         this.baseModel = null;
     }
     setBaseModel(model) {
@@ -18,7 +18,7 @@ class ToggleableModel {
     }
 
     create(categories, name) {
-        const model = this.baseModel ?? new ModelCollection(name);
+        const model = this.baseModel ?? new BlockModel(name);
 
         for(const category of categories) {
             model.append(this.models.get(category));

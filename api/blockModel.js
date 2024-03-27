@@ -1,13 +1,14 @@
 import { Matrix4, Vector3 } from "three";
 import Writeable from "./writeable.js";
 import ModelCuboid from "./modelCuboid.js";
+import Material from "./material.js";
 
-class ModelCollection extends Writeable {
+class BlockModel extends Writeable {
     constructor(name) {
         super();
         this.name = name;
 
-        /*** @type {Array<ModelCuboid>} */
+        /** @type {Array<ModelCuboid>} */
         this.cuboids = new Array;
     }
     setAmbientOcclusionEnabled(enableAmbientOcclusion) {
@@ -15,13 +16,11 @@ class ModelCollection extends Writeable {
             cuboid.setAmbientOcclusionEnabled(enableAmbientOcclusion);
         }
     }
-    serialize() {
+    serialize(prefix) {
         const textures = new Object;
     
-        const totalMaterials = new Set;
-        for(const cuboid of this.cuboids) {
-            cuboid.getMaterials().forEach(material => totalMaterials.add(material));
-        }
+        const totalMaterials = this.getAllMaterials();
+        
         for(const material of totalMaterials) {
             textures[material.id] = material.serialize();
         }
@@ -43,6 +42,14 @@ class ModelCollection extends Writeable {
             cuboid.setAllMaterials(material);
         }
     }
+    /** @returns {Array<Material>} */
+    getAllMaterials() {
+        const materials = new Set;
+        for(const cuboid of this.cuboids) {
+            cuboid.getMaterials().forEach(material => materials.add(material));
+        }
+        return Array.from(materials);
+    }
 
     append(other) {
         for(const cuboid of other.cuboids) this.addCuboid(cuboid.clone());
@@ -50,7 +57,7 @@ class ModelCollection extends Writeable {
         return this;
     }
     clone(name = this.name) {
-        const model = new ModelCollection(name);
+        const model = new BlockModel(name);
         for(const cuboid of this.cuboids) model.addCuboid(cuboid.clone());
 
         return model;
@@ -83,4 +90,4 @@ class ModelCollection extends Writeable {
     }
 }
 
-export default ModelCollection;
+export default BlockModel;

@@ -3,11 +3,16 @@ import { Vector3 } from "three";
 
 class Direction {
     constructor(name, x, y, z) {
-        this.name = name;
+        /** @type {DirectionMap} */ this.directionMap = null;
+        /** @type {String} */ this.name = name;
         this.vector = new Vector3(x, y, z);
     }
     *[Symbol.iterator]() {
         yield* this.vector.toArray();
+    }
+
+    setDirectionMap(directionMap) {
+        this.directionMap = directionMap;
     }
     
     get x() {
@@ -25,6 +30,10 @@ class Direction {
 
     is(name) {
         return this.name.toLowerCase() == name.toLowerCase();
+    }
+
+    inverse() {
+        return this.directionMap.inverse(this);
     }
     
     toString() {
@@ -55,7 +64,7 @@ class DirectionList {
         return this.directions.size;
     }
 
-    /*** @param {function(Direction, Number, Set)} callback */
+    /** @param {function(Direction, Number, Set)} callback */
     forEach(callback) {
         this.directions.forEach(callback);
     }
@@ -81,6 +90,23 @@ class DirectionList {
 
         return bitmask;
     }
+    invert(directionMap) {
+        const clone = this.clone();
+        const directions = new Set;
+
+        directionMap.directions.forEach(direction => {
+            if(!clone.directions.has(direction)) directions.add(direction);
+        });
+
+        clone.directions.clear();
+        for(const direction of directions) clone.add(direction);
+
+        return clone;
+    }
+
+    clone() {
+        return new DirectionList(this);
+    }
     
     toString() {
         if(this.directions.size == 0) return "none";
@@ -89,18 +115,21 @@ class DirectionList {
 }
 
 class DirectionMap {
-    constructor() {
-        /*** @type {Map<String, Direction>} */
+    constructor(directions = []) {
+        /** @type {Map<String, Direction>} */
         this.directions = new Map;
-    }
-    addDirection(...directions) {
-        for(const direction of directions) this.directions.set(direction.name, direction);
-    }
-    getDirection(name) {
-        return this.directions.get(name.toLowerCase());
+
+        for(const direction of directions) this.addDirection(direction);
     }
     *[Symbol.iterator]() {
         yield* this.directions.values();
+    }
+    addDirection(direction) {
+        direction.setDirectionMap(this);
+        this.directions.set(direction.name, direction);
+    }
+    getDirection(name) {
+        return this.directions.get(name.toLowerCase());
     }
     values() {
         return this.directions.values();
@@ -109,7 +138,33 @@ class DirectionMap {
         return this.directions.keys();
     }
 
-    /*** @returns {Array<DirectionList>} */
+    /** @param {Direction} direction * @returns {Direction} */
+    inverse(direction) {
+        const inverse = direction.vector.clone().multiplyScalar(-1);
+
+        return this.vectorToDirection(inverse);
+    }
+
+    /** @param {Vector3} vector */
+    vectorToDirection(vector) {
+        let lowestDistance = Infinity;
+        let lowestDistanceDirection;
+
+        for(const direction of this.directions.values()) {
+            /** @type {Vector3} */
+            const directionVector = direction.vector.clone();
+            const distance = directionVector.normalize().distanceTo(vector.clone().normalize());
+            
+            if(distance < lowestDistance) {
+                lowestDistance = distance;
+                lowestDistanceDirection = direction;
+            }
+        }
+
+        return lowestDistanceDirection;
+    }
+
+    /** @returns {Array<DirectionList>} */
     combinations() {
         const keys = Array.from(this.directions.keys());
         const totalCombinations = 2 ** keys.length;
@@ -133,18 +188,28 @@ class Directions {
         return direction.toLowerCase();
     }
 
-    static cardinals = new DirectionMap();
-
-    static {
-        Directions.cardinals.addDirection(
-            new Direction("north", 0, 0, 1),
-            new Direction("east", 1, 0, 0),
-            new Direction("south", 0, 0, -1),
-            new Direction("west", -1, 0, 0),
-            new Direction("up", 0, 1, 0),
-            new Direction("down", 0, -1, 0)
-        );
-    }
+    static cardinals = new DirectionMap([
+        new Direction("north", 0, 0, 1),
+        new Direction("east", 1, 0, 0),
+        new Direction("south", 0, 0, -1),
+        new Direction("west", -1, 0, 0),
+        new Direction("up", 0, 1, 0),
+        new Direction("down", 0, -1, 0)
+    ]);
+    static relative = new DirectionMap([
+        new Direction("front", 0, 0, 1),
+        new Direction("right", 1, 0, 0),
+        new Direction("back", 0, 0, -1),
+        new Direction("left", -1, 0, 0),
+        new Direction("top", 0, 1, 0),
+        new Direction("bottom", 0, -1, 0)
+    ]);
+    static simpleBlock = new DirectionMap([
+        new Direction("front", 0, 0, 1),
+        new Direction("back", 0, 0, -1),
+        new Direction("side", 0, 0, 0),
+    ]);
 }
 
 export default Directions;
+export { Direction, DirectionList, DirectionMap };

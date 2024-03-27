@@ -4,7 +4,7 @@ import Writeable from "./writeable.js";
 const BASE_TRIGGER_SHEET = {};
 
 class TriggerSheet extends Writeable {
-    constructor(id, parent) {
+    constructor(id, parent = null) {
         super();
         this.parent = parent;
         this.id = id;
@@ -14,12 +14,14 @@ class TriggerSheet extends Writeable {
     }
 
     addAction(trigger, action, index = this.triggers[trigger]?.length ?? 0) {
+        if(action instanceof Array) throw new TypeError("Use addActions() for array support");
         this.triggers[trigger] ??= new Array;
         this.triggers[trigger].splice(index, 0, action);
     }
-    addActions(trigger, actions) {
-        this.triggers[trigger] ??= new Array;
-        this.triggers[trigger].push(...actions);
+    addActions(triggers, actions) {
+        if(actions instanceof BlockAction) throw new TypeError("Use addAction() to add one action");
+        if(!(triggers instanceof Array)) triggers = [triggers];
+        for(const trigger of triggers) for(const action of actions) this.addAction(trigger, action);
     }
     removeTrigger(trigger) {
         delete this.triggers[trigger];
@@ -43,13 +45,13 @@ class TriggerSheet extends Writeable {
         this.triggers[trigger] = actions;
     }
 
-    serialize() {
+    serialize(prefix) {
         const output = new TriggerSheet(this.id, BASE_TRIGGER_SHEET);
         output.append(this);
         
         return {
             parent: output.parent?.id ?? BASE_TRIGGER_SHEET.id,
-            stringId: output.id,
+            stringId: prefix + ":" + output.id,
             triggers: Object.fromEntries(Object.keys(output.triggers).map(k => [k, output.triggers[k].map(t => t.serialize())]))
         }
     }

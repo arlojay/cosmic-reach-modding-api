@@ -20,15 +20,16 @@ class BlockAction {
         action.parameters.xOff = x;
         action.parameters.yOff = y;
         action.parameters.zOff = z;
-        action.parameters.params = params;
+        action.parameters.params = Object.fromEntries(Object.entries(params).map(([k, v]) => [k, `${v}`]));
         return action;
     }
-    static runTrigger(x, y, z, trigger) {
+    static runTrigger(x, y, z, trigger, tickDelay = 0) {
         const action = new BlockAction("base:run_trigger");
         action.parameters.xOff = x;
         action.parameters.yOff = y;
         action.parameters.zOff = z;
         action.parameters.triggerId = trigger;
+        action.parameters.tickDelay = tickDelay;
         return action;
     }
     static playSound2d(sound, volume = 1, pitch = 1, pan = 0) {

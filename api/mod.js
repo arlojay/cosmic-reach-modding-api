@@ -2,6 +2,7 @@ import { MultiBar } from "cli-progress";
 import { PromisePool } from "@supercharge/promise-pool";
 import Block from "./block.js";
 import Writer from "./writer.js";
+import { StateId } from "./blockState.js";
 
 class Mod {
     constructor(id, writer, isRelease) {
@@ -53,9 +54,28 @@ class Mod {
 
     /** @return {Block} */
     createBlock(id) {
-        const block = new Block(this.id + ":" + id);
+        const block = new Block(id, this);
         this.blocks.add(block);
         return block;
+    }
+
+    /**
+     * @param {Block|String} block Block entry or block id
+     * @returns {String}
+     */
+    getBlockId(block) {
+        if(block instanceof Block) {
+            return this.id + ":" + block.id;
+        } else {
+            return this.id + ":" + block;
+        }
+    }
+
+    /**
+     * @param {StateId} state State id
+     */
+    getBlockStateId(state) {
+        state.toString();
     }
 }
 

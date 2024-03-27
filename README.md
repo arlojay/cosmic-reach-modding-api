@@ -45,6 +45,7 @@ const state = block.createBlockState(model); // Create a default block state wit
 ================= */
 
 // Gets the folders ready for a mod to write to (deletes existing files!)
+// TIP: this leaves `blocks/textures/` intact.
 // (This is a separate function in case multiple mods should be compiled at once)
 await writer.createOutputDir();
 
@@ -54,7 +55,7 @@ await mod.write();
 ---
 
 ### Glowing Cheese
-The following is an example script for a mod that adds a glowing cheese block that, when interacted with, disappears.
+The following is an example script for a mod that adds a glowing cheese block that, when interacted with, disappears. *No cheese for you!*
 ```js
 import { Mod, BlockModel, ModelCuboid, Material, TriggerSheet, BlockAction, Writer } from "crmod-api";
 import { Box3, Vector3 } from "three";
@@ -62,10 +63,10 @@ import { Box3, Vector3 } from "three";
 const writer = new Writer("./build");
 const mod = new Mod("examplemod", writer);
 
-const myBlockId = "disappear"; // So we don't have to type it multiple times
+const myBlockId = "magic_cheese"; // So we don't have to type it multiple times
 
-const block = mod.createBlock(myBlockId); // Will write to "./build/blocks/block_examplemod_disappear.json
-const model = new BlockModel(myBlockId); // Will write to "./build/models/blocks/model_examplemod_disappear.json
+const block = mod.createBlock(myBlockId); // Will write to "./build/blocks/block_examplemod_magic_cheese.json
+const model = new BlockModel(myBlockId); // Will write to "./build/models/blocks/model_examplemod_magic_cheese.json
 
 
 /* =====================

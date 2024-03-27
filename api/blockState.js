@@ -1,3 +1,4 @@
+import Block from "./block.js";
 import BlockModel from "./blockModel.js";
 import TriggerSheet from "./triggerSheet.js";
 
@@ -60,9 +61,16 @@ class StateIdBase {
 }
 
 class BlockState {
-    constructor(id, model, settings = {}) {
+    /**
+     * @param {String} id 
+     * @param {BlockModel} model 
+     * @param {Object} settings 
+     * @param {Block} parentBlock 
+     */
+    constructor(id, model, settings, parentBlock) {
         /** @type {StateId} */
         this.id = id;
+        this.parentBlock = parentBlock;
         
         /** @type {BlockModel} */
         this.model = model;
@@ -95,7 +103,8 @@ class BlockState {
         })
     }
 
-    serialize(prefix) {
+    serialize() {
+        const prefix = this.parentBlock.parentMod.id;
         return {
             modelName: "model_" + prefix + "_" + this.model.name,
             isOpaque: this.opaque,
@@ -106,8 +115,12 @@ class BlockState {
             lightLevelGreen: this.lightLevelGreen,
             lightLevelBlue: this.lightLevelBlue,
             catalogHidden: this.hidden,
-            blockEventsId: prefix + ":" + this.triggerSheet?.id
+            blockEventsId: this.triggerSheet == null ? undefined : prefix + ":" + this.triggerSheet.id
         }
+    }
+
+    getFullId() {
+        return this.parentBlock.getFullId() + "[" + this.toString() + "]";
     }
 }
 

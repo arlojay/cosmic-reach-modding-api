@@ -2,9 +2,46 @@ import { MultiBar } from "cli-progress";
 import { PromisePool } from "@supercharge/promise-pool";
 import Block from "./block.js";
 import Writer from "./writer.js";
-import { StateId } from "./blockState.js";
+import BlockState, { StateId } from "./blockState.js";
 
+/**
+ * Defines a data mod. Every element is added to an instance of this class.
+ * 
+ * @class Mod
+ */
 class Mod {
+    /**
+     * The unique id for this mod.
+     *
+     * @type {string}
+     * @memberof Mod
+     */
+    id;
+
+    /**
+     * The {@link Block|Blocks} declared within this mod.
+     *
+     * @type {Set<Block>}
+     * @memberof Mod
+     */
+    blocks;
+
+    /**
+     * Controls whether the mod is in release mode. When in release mode, the output files are minified to reduce file size.
+     *
+     * @type {boolean}
+     * @memberof Mod
+     */
+    isRelease;
+
+    /**
+     * Initializes a new mod.
+     * 
+     * @param {string} id The unique id for this mod.
+     * @param {Writer} writer The {@link Writer} instance used to write the mod files.
+     * @param {boolean} isRelease Controls whether the mod is in release mode. When in release mode, the output files are minified to reduce file size.
+     * @memberof Mod
+     */
     constructor(id, writer, isRelease) {
         this.id = id;
         this.blocks = new Set;
@@ -14,6 +51,13 @@ class Mod {
         this.writer.fancy = !this.isRelease;
     }
 
+    /**
+     * Locks the current mod and writes all the data to the output directory.
+     * 
+     * This function MUST be the last function called when creating a mod.
+     *
+     * @memberof Mod
+     */
     async write() {
         const t0 = performance.now();
         const bars = new MultiBar({
@@ -52,7 +96,11 @@ class Mod {
         console.log("Took " + Math.round((performance.now() - t0) * 100) / 100 + "ms");
     }
 
-    /** @return {Block} */
+    /** 
+     * Creates a new {@link Block} within this mod.
+     * 
+     * @return {Block} 
+     */
     createBlock(id) {
         const block = new Block(id, this);
         this.blocks.add(block);
@@ -60,8 +108,10 @@ class Mod {
     }
 
     /**
+     * Returns the id for a given block declared within this mod.
+     * 
      * @param {Block|String} block Block entry or block id
-     * @returns {String}
+     * @returns {string}
      */
     getBlockId(block) {
         if(block instanceof Block) {
@@ -72,10 +122,14 @@ class Mod {
     }
 
     /**
-     * @param {StateId} state State id
+     * Returns the id for a given {@link BlockState} declared within this mod.
+     * 
+     * The ID for a block state is a string containing all unique values for every 
+     * 
+     * @param {BlockState} state State id
      */
     getBlockStateId(state) {
-        state.toString();
+        return state.id.toString() || "default";
     }
 }
 

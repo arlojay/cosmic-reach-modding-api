@@ -1,35 +1,75 @@
 import { Canvas, Image, createCanvas, loadImage } from "canvas";
 import Writeable from "./writeable.js";
 
-/** @param {Image} image */
+import Mod from "./mod.js";
+
+/** 
+ * Converts an image to a {@link Canvas}.
+ * 
+ * @package
+ * @param {Image} image The image to convert.
+ * @returns {Canvas} The converted canvas.
+ */
 function imageToCanvas(image) {
     const canvas = createCanvas(image.width, image.height);
     canvas.getContext("2d").drawImage(image, 0, 0);
     return canvas;
 }
 
+/**
+ * Defines a texture within a {@link Mod}.
+ *
+ * @class Texture
+ * @extends {Writeable}
+ */
 class Texture extends Writeable {
     /**
-     * @param {String} name Image output name
+     * Initializes a new Texture.
+     * 
+     * @param {string} name Image output name
      * @param {Image|Canvas} canvas Image data
      */
     constructor(name, canvas) {
         super();
 
-        /** @type {String} */ this.name = name;
+        /** @type {string} */ this.name = name;
         /** @type {Canvas} */ this.canvas = (canvas instanceof Canvas) ? canvas : imageToCanvas(canvas);
     }
-    serialize(prefix) {
+
+    /**
+     * Serializes the Texture into a JSON object.
+     * 
+     * @override
+     * @return {Object} The serialized Texture as a JSON object. 
+     * @memberof Texture
+     */
+    serialize() {
         return this.canvas.toBuffer();
     }
 }
 
+/**
+ * Defines a colorized texture within a {@link Mod}.
+ *
+ * @class ColorizedTexture
+ */
 class ColorizedTexture {
+    /**
+     * Creates a colorized texture from two image files.
+     *
+     * @static
+     * @param {string} whiteSource The path for the white variant image.
+     * @param {string} blackSource The path for the black variant image.
+     * @return {ColorizedTexture} The colorized texture.
+     * @memberof ColorizedTexture
+     */
     static async createFromFiles(whiteSource, blackSource) {
         return new ColorizedTexture(await loadImage(whiteSource), await loadImage(blackSource));
     }
 
     /**
+     * Initializes a new ColorizedTexture.
+     * 
      * @param {Image} whiteTexture White variant image
      * @param {Image} blackTexture Black variant image
      */
@@ -40,7 +80,7 @@ class ColorizedTexture {
 
     /**
      * Creates a colorized image by interpolating each color channel from black's channel value to white's channel value
-     * @param {String} name Image output name
+     * @param {string} name Image output name
      * @param {Number} r Red coefficient
      * @param {Number} g Green coefficient
      * @param {Number} b Blue coefficient

@@ -3,7 +3,80 @@ import Directions, { Direction } from "./directions.js";
 import ModelCuboid from "./modelCuboid.js";
 import Material from "./material.js";
 
+/**
+ * Defines a cuboid that has different materials depending on it's direction.
+ *
+ * @class FrontBackCuboid
+ */
 class FrontBackCuboid {
+    /**
+     * The cuboid used within this structure.
+     * 
+     * @private
+     * @type {ModelCuboid}
+     * @memberof FrontBackCuboid
+     */
+    cuboid;
+
+    /**
+     * The front material.
+     *
+     * @type {Material}
+     * @memberof FrontBackCuboid
+     */
+    frontMaterial;
+
+    /**
+     * The back material.
+     *
+     * @type {Material}
+     * @memberof FrontBackCuboid
+     */
+    backMaterial;
+
+    /**
+     * The up material.
+     *
+     * @type {Material}
+     * @memberof FrontBackCuboid
+     */
+    upMaterial;
+
+    /**
+     * The down material.
+     *
+     * @type {Material}
+     * @memberof FrontBackCuboid
+     */
+    downMaterial;
+
+    /**
+     * The right material.
+     *
+     * @type {Material}
+     * @memberof FrontBackCuboid
+     */
+    rightMaterial;
+
+    /**
+     * The left material.
+     *
+     * @type {Material}
+     * @memberof FrontBackCuboid
+     */
+    leftMaterial;
+
+    /**
+     * Initializes a new FrontBackCuboid.
+     * @param {ModelCuboid} cuboid
+     * @param {Material} frontMaterial
+     * @param {Material} backMaterial
+     * @param {Material} sideMaterialUp
+     * @param {Material} sideMaterialRight
+     * @param {Material} sideMaterialDown
+     * @param {Material} sideMaterialLeft
+     * @memberof FrontBackCuboid
+     */
     constructor(cuboid, frontMaterial, backMaterial, sideMaterialUp, sideMaterialRight, sideMaterialDown, sideMaterialLeft) {
         /** @type {ModelCuboid} */ this.cuboid = cuboid;
         
@@ -15,7 +88,12 @@ class FrontBackCuboid {
         /** @type {Material} */ this.sideMaterialLeft = sideMaterialLeft;
     }
 
-    /** @param {Direction} direction */
+    /** 
+     * Calculates the materials for the cuboid for the specified direction and returns it.
+     * 
+     * @param {Direction} direction The direction to get the cuboid for.
+     * @returns {ModelCuboid}
+     */
     getForDirection(direction) {
         const cuboid = this.cuboid.clone();
 

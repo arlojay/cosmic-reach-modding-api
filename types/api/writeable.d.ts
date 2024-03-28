@@ -1,14 +1,12 @@
+export default Writeable;
 /**
  * Defines an abstract class that represents a object that can be written to a file.
  *
  * @abstract
  * @class Writeable
  */
-class Writeable {
-    constructor() {
-        this.written = false;
-    }
-
+declare class Writeable {
+    written: boolean;
     /**
      * Serializes the object to a JSON object.
      *
@@ -17,9 +15,5 @@ class Writeable {
      * @return {Object} The serialized object as a JSON object.
      * @memberof Writeable
      */
-    serialize(prefix) {
-        return {};
-    }
+    serialize(prefix: string): any;
 }
-
-export default Writeable;

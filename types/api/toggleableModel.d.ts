@@ -1,11 +1,10 @@
-import BlockModel from "./blockModel.js";
-
+export default ToggleableModel;
 /**
  * A model that can be toggled between different states.
  *
  * @class ToggleableModel
  */
-class ToggleableModel {
+declare class ToggleableModel {
     /**
      * The collections of models that can be toggled.
      *
@@ -13,8 +12,7 @@ class ToggleableModel {
      * @type {Map(String, BlockModel)}
      * @memberof ToggleableModel
      */
-    models;
-
+    private models;
     /**
      * The base model that the toggleable model is based on.
      *
@@ -22,29 +20,16 @@ class ToggleableModel {
      * @type {BlockModel}
      * @memberof ToggleableModel
      */
-    basemodel;
-
-    /**
-     * Initializes a new ToggleableModel.
-     * @memberof ToggleableModel
-     */
-    constructor() {
-        /** @type {Map(String, ModelCollection)} */
-        this.models = new Map;
-        /** @type {BlockModel} */
-        this.baseModel = null;
-    }
-
+    private basemodel;
+    /** @type {BlockModel} */
+    baseModel: BlockModel;
     /**
      * Sets the base model for the toggleable model.
      *
      * @param {BlockModel} model The base model.
      * @memberof ToggleableModel
      */
-    setBaseModel(model) {
-        this.baseModel = model;
-    }
-
+    setBaseModel(model: BlockModel): void;
     /**
      * Sets the model for a specific category.
      *
@@ -52,38 +37,23 @@ class ToggleableModel {
      * @param {BlockModel} model The model to set.
      * @memberof ToggleableModel
      */
-    setModel(category, model) {
-        this.models.set(category, model);
-    }
-
+    setModel(category: string, model: BlockModel): void;
     /**
      * Gets the model for a specific category.
      *
      * @param {string} category The category of the model.
-     * @return {BlockModel} 
+     * @return {BlockModel}
      * @memberof ToggleableModel
      */
-    getModel(category) {
-        return this.models.get(category);
-    }
-
+    getModel(category: string): BlockModel;
     /**
      * Creates a new model based on the base model with the specified categories.
      *
      * @param {Array<string>} categories The categories to include in the model.
      * @param {string} name The name of the new model.
-     * @return {BlockModel} 
+     * @return {BlockModel}
      * @memberof ToggleableModel
      */
-    create(categories, name) {
-        const model = this.baseModel ?? new BlockModel(name);
-
-        for(const category of categories) {
-            model.append(this.models.get(category));
-        }
-
-        return model.clone(name);
-    }
+    create(categories: Array<string>, name: string): BlockModel;
 }
-
-export default ToggleableModel;
+import BlockModel from "./blockModel.js";

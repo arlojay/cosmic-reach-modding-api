@@ -1,6 +1,7 @@
-# Cosmic Reach Modding API
+# Cosmic Reach Modding API ([Documentation](https://docs.crmapi.arlojay.com/))
 ### Dynamic asset generation for [Cosmic Reach](https://finalforeach.itch.io/cosmic-reach)
 This library creates a pipeline for creating and compiling mods using only JavaScript. It can create **blocks** (with many different states), **block events** (referred to as "trigger sheets"), **block models**, and even procedural **textures**.
+
 
 # Examples
 
@@ -116,3 +117,6 @@ const state = block.createBlockState(model, {
 await writer.createOutputDir();
 await mod.write();
 ```
+
+## Credits
+- Documentation created by [DarkenLM](https://github.com/DarkenLM)

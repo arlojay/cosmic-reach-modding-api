@@ -120,7 +120,7 @@ class BlockState {
     }
 
     getFullId() {
-        return this.parentBlock.getFullId() + "[" + this.toString() + "]";
+        return this.parentBlock.getFullId() + "[" + this.id + "]";
     }
 }
 

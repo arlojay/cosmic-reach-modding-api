@@ -68,15 +68,21 @@ class TriggerSheet extends Writeable {
      * 
      * If the {@link trigger} does not exist, it will be created.
      *
-     * @param {string} trigger The trigger to add the action to.
+     * @param {string|Array<string>} triggers A trigger or a list of triggers to add the action to.
      * @param {BlockAction} action The action to add.
-     * @param {number} index The index to insert the action at.
+     * @param {number?} index The index to insert the action at.
      * @memberof TriggerSheet
      */
-    addAction(trigger, action, index = this.triggers[trigger]?.length ?? 0) {
+    addAction(triggers, action, index = this.triggers[(triggers instanceof Array) ? triggers[0] : triggers]?.length ?? 0) {
         if(action instanceof Array) throw new TypeError("Use addActions() for array support");
-        this.triggers[trigger] ??= new Array;
-        this.triggers[trigger].splice(index, 0, action);
+        if(!(triggers instanceof Array)) triggers = [triggers];
+
+        for(const trigger of triggers) {
+            this.triggers[trigger] ??= new Array;
+            
+            if(index < 0) index += this.triggers[trigger].length;
+            this.triggers[trigger].splice(index, 0, action);
+        }
     }
 
     /**
@@ -84,14 +90,18 @@ class TriggerSheet extends Writeable {
      * 
      * For each trigger on {@link triggers}, the corresponding actions in {@link actions} will be added.
      *
-     * @param {string|Array<string>} triggers
-     * @param {Array<BlockAction>} actions
+     * @param {string|Array<string>} triggers A trigger or a list of triggers to add the actions to.
+     * @param {BlockAction} actions The actions to add.
+     * @param {number?} startingIndex The index to sequentially insert the actions at.
      * @memberof TriggerSheet
      */
-    addActions(triggers, actions) {
+    addActions(triggers, actions, startingIndex = this.triggers[(triggers instanceof Array) ? triggers[0] : triggers]?.length ?? 0) {
         if(actions instanceof BlockAction) throw new TypeError("Use addAction() to add one action");
         if(!(triggers instanceof Array)) triggers = [triggers];
-        for(const trigger of triggers) for(const action of actions) this.addAction(trigger, action);
+
+        if(startingIndex < 0) startingIndex += this.triggers[triggers[0]]?.length ?? 0;
+        let i = 0;
+        for(const action of actions) this.addAction(triggers, action, startingIndex + i++);
     }
 
     /**

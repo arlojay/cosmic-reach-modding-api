@@ -40,25 +40,26 @@ declare class TriggerSheet extends Writeable {
     };
     /**
      * Adds a new action to the trigger sheet.
-     *
+     * 
      * If the {@link trigger} does not exist, it will be created.
      *
-     * @param {string} trigger The trigger to add the action to.
+     * @param {string|Array<string>} triggers A trigger or a list of triggers to add the action to.
      * @param {BlockAction} action The action to add.
-     * @param {number} index The index to insert the action at.
+     * @param {number?} index The index to insert the action at.
      * @memberof TriggerSheet
      */
-    addAction(trigger: string, action: BlockAction, index?: number): void;
+    addAction(triggers: string | Array<string>, action: BlockAction, index?: number): void;
     /**
      * Adds multiple actions to multiple triggers within the trigger sheet.
-     *
+     * 
      * For each trigger on {@link triggers}, the corresponding actions in {@link actions} will be added.
      *
-     * @param {string|Array<string>} triggers
-     * @param {Array<BlockAction>} actions
+     * @param {string|Array<string>} triggers A trigger or a list of triggers to add the actions to.
+     * @param {BlockAction} actions The actions to add.
+     * @param {number?} startingIndex The index to sequentially insert the actions at.
      * @memberof TriggerSheet
      */
-    addActions(triggers: string | Array<string>, actions: Array<BlockAction>): void;
+    addActions(triggers: string | Array<string>, actions: Array<BlockAction>, startingIndex?: number): void;
     /**
      * Removes a trigger from the trigger sheet.
      *

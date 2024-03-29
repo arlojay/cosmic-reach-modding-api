@@ -80,7 +80,7 @@ class StateId {
      * @memberof StateId
      */
     clone() {
-        const id = new BlockState.StateId(this.base);
+        const id = new StateId(this.base);
         for(const [k, v] of this.states) id.set(k, v);
 
         return id;
@@ -318,7 +318,7 @@ class BlockState {
             lightLevelBlue: this.lightLevelBlue,
             hidden: this.hidden,
             triggerSheet: this.triggerSheet?.id,
-        })
+        }, this.parentBlock);
     }
 
     /**

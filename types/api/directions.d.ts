@@ -180,6 +180,7 @@ export class DirectionList {
      * Checks whether a {@link Direction} exists in the list.
      *
      * @param {Direction} direction The {@link Direction} to check.
+     * @return {boolean}
      * @memberof DirectionList
      */
     has(direction: Direction): void;

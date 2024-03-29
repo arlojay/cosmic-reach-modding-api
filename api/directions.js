@@ -185,10 +185,11 @@ class DirectionList {
      * Checks whether a {@link Direction} exists in the list.
      *
      * @param {Direction} direction The {@link Direction} to check.
+     * @return {boolean}
      * @memberof DirectionList
      */
     has(direction) {
-        this.directions.has(direction);
+        return this.directions.has(direction);
     }
 
     /**

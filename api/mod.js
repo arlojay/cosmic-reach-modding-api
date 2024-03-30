@@ -73,7 +73,7 @@ class Mod {
             const startTime = performance.now();
             {
                 const bar = bars.create(block.states.size, 0, { title: block.id.padStart(24, " ") + "  Model construction".padStart(32, " "), time: "        " });
-                promisePools.add(PromisePool.withConcurrency(concurrency).for(block.states.values()).process(async (state) => {
+                promisePools.add(PromisePool.withConcurrency(concurrency).for(block.states.values()).handleError(e => {throw e}).process(async (state) => {
                     await this.writer.write(state.model, this.id);
                     bar.increment(1, { name: state.model.name, time: (Math.floor(performance.now() - startTime).toString() + "ms").padEnd(8, " ") });
                 }));
@@ -81,7 +81,7 @@ class Mod {
 
             {
                 const bar = bars.create(block.states.size, 0, { title: block.id.padStart(24, " ") + "  Trigger sheet compilation".padStart(32, " "), time: 0 });
-                promisePools.add(PromisePool.withConcurrency(concurrency).for(block.states.values()).process(async (state) => {
+                promisePools.add(PromisePool.withConcurrency(concurrency).for(block.states.values()).handleError(e => {throw e}).process(async (state) => {
                     await this.writer.write(state.triggerSheet, this.id);
                     bar.increment(1, { name: state.triggerSheet.id, time: (Math.floor(performance.now() - startTime).toString() + "ms").padEnd(8, " ") });
                 }));

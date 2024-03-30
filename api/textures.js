@@ -24,6 +24,16 @@ function imageToCanvas(image) {
  */
 class Texture extends Writeable {
     /**
+     * Creates a new Texture from file location
+     * 
+     * @param {string} source Image source file name
+     * @return {Promise<Texture>}
+     */
+    static async fromFile(source) {
+        return new Texture(source.split(/[\/\\]/g).pop(), imageToCanvas(await loadImage(source)));
+    }
+
+    /**
      * Initializes a new Texture.
      * 
      * @param {string} name Image output name
@@ -58,9 +68,10 @@ class ColorizedTexture {
      * Creates a colorized texture from two image files.
      *
      * @static
+     * @async
      * @param {string} whiteSource The path for the white variant image.
      * @param {string} blackSource The path for the black variant image.
-     * @return {ColorizedTexture} The colorized texture.
+     * @return {Promise<ColorizedTexture>} The colorized texture.
      * @memberof ColorizedTexture
      */
     static async createFromFiles(whiteSource, blackSource) {

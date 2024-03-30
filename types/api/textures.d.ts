@@ -8,12 +8,13 @@ export class ColorizedTexture {
      * Creates a colorized texture from two image files.
      *
      * @static
+     * @async
      * @param {string} whiteSource The path for the white variant image.
      * @param {string} blackSource The path for the black variant image.
-     * @return {ColorizedTexture} The colorized texture.
+     * @return {Promise<ColorizedTexture>} The colorized texture.
      * @memberof ColorizedTexture
      */
-    static createFromFiles(whiteSource: string, blackSource: string): ColorizedTexture;
+    static async createFromFiles(whiteSource: string, blackSource: string): Promise<ColorizedTexture>;
     /**
      * Initializes a new ColorizedTexture.
      *
@@ -41,6 +42,15 @@ export class ColorizedTexture {
  * @extends {Writeable}
  */
 export class Texture extends Writeable {
+    /**
+     * Creates a new Texture from file location
+     * 
+     * @static
+     * @async
+     * @param {string} source Image source file name
+     * @return {Promise<Texture>}
+     */
+    static async fromFile(source: string): Promise<Texture>;
     /**
      * Initializes a new Texture.
      *

@@ -58,7 +58,20 @@ class StateId {
     set(key, value) {
         if(!this.states.has(key)) throw new ReferenceError("Cannot find state with key " + key);
 
-        this.states.set(key, value);
+        this.states.set(key, `${value}`);
+    }
+
+    /**
+     * Gets the value of a state key.
+     *
+     * @param {string} key
+     * @return {string}
+     * @memberof StateId
+     */
+    get(key) {
+        if(!this.states.has(key)) throw new ReferenceError("Cannot find state with key " + key);
+
+        return `${this.states.get(key)}`;
     }
 
     /**

@@ -208,6 +208,14 @@ export class StateId {
      */
     set(key: string, value: string): void;
     /**
+     * Gets the value of a state key.
+     *
+     * @param {string} key
+     * @return {string}
+     * @memberof StateId
+     */
+    get(key: string): string;
+    /**
      * Resets the value of a state key to its default value.
      *
      * @param {string} key
